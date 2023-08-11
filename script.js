@@ -1,7 +1,7 @@
 const container = document.querySelector('.container');
 
 const GameBoard = (function () {
-    const gameBoardArr = ['X', 'O', 'X', 'X', 'O', 'O', 'X', 'O', 'X'];
+    const gameBoardArr = ['', 'O', '', '', '', '', '', '', 'X'];
 
 
     const renderBoard = () => {
