@@ -40,3 +40,27 @@ h1 {
 .container > div:hover {
     background-color: rgb(214, 214, 214);
 }
+
+.player-choice-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.player-choice-container button {
+    font-size: 32px;
+    padding: 12px;
+    font-weight: bold;
+    background-color: rgb(214, 214, 214);
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.player-choice-container button:hover {
+    background-color: white;
+}
+
+
+.player-choice-container button:focus {
+    background-color: white;
+}
