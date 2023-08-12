@@ -17,4 +17,11 @@ const GameBoard = (function () {
     };
 })();
 
+const playerFactory = (name, marker) => {
+    return { name, marker };
+}
+
+const player1 = playerFactory('player1', 'X');
+const player2 = playerFactory('player2', 'O');
+
 GameBoard.renderBoard();
