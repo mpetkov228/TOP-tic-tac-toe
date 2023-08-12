@@ -4,11 +4,14 @@ const playerChoiceContainer = document.querySelector('.player-choice-container')
 
 cells.forEach(cell => {
     cell.addEventListener('click', () => {
-        cell.textContent = currentPlayer.marker;
-        console.log('booo');
+        const index = cell.getAttribute('data-index');
 
+        GameBoard.gameBoardArr[index] = currentPlayer.marker;
+        cell.textContent = currentPlayer.marker;
+        
+        console.log(GameBoard.gameBoardArr);
     }, { once: true });
-})
+});
 
 playerChoiceContainer.addEventListener('click', (event) => {
     if (event.target.className == 'player-one') {
@@ -24,7 +27,9 @@ playerChoiceContainer.addEventListener('click', (event) => {
 const GameBoard = (function () {
     const gameBoardArr = ['', '', '', '', '', '', '', '', ''];
 
-
+    return {
+        gameBoardArr
+    };
 })();
 
 const Player = (function () {
