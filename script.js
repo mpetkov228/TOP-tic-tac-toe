@@ -1,6 +1,4 @@
-const container = document.querySelector('.container');
 const playerChoiceContainer = document.querySelector('.player-choice-container');
-
 
 playerChoiceContainer.addEventListener('click', (event) => {
     if (event.target.className == 'player-one') {
@@ -47,12 +45,69 @@ const PlayGame = (function () {
                 cell.textContent = currentPlayer.marker;
                 
                 console.log(GameBoard.gameBoardArr);
+                determineOutcome();
             }, { once: true });
         });
     }
     
     return {
         addEvents
+    };
+})();
+
+function determineOutcome() {
+    let arr = GameBoard.gameBoardArr;
+
+    
+}
+
+function checkRows(arr) {
+    if (arr[0] == arr[1] && arr[0] == arr[2] && (arr[0] == 'X' || arr[0] == 'O')) {
+        return true;
+    } else if (arr[3] == arr[4] && arr[3] == arr[5] && (arr[3] == 'X' || arr[3] == 'O')) {
+        return true;
+    } else if (arr[6] == arr[7] && arr[6] == arr[8] && (arr[6] == 'X' || arr[6] == 'O')) {
+        return true;
+    }
+
+    return false;
+}
+
+function checkColumns(arr) {
+    if (arr[0] == arr[3] && arr[0] == arr[6] && (arr[0] == 'X' || arr[0] == 'O')) {
+        return true;
+    } else if (arr[1] == arr[4] && arr[1] == arr[7] && (arr[1] == 'X' || arr[1] == 'O')) {
+        return true;
+    } else if (arr[2] == arr[5] && arr[2] == arr[8] && (arr[2] == 'X' || arr[2] == 'O')) {
+        return true;
+    }
+
+    return false;
+}
+
+function checkDiagonals(arr) {
+    if (arr[0] == arr[4] && arr[0] == arr[8] && (arr[0] == 'X' || arr[0] == 'O')) {
+        return true;
+    }
+
+    if (arr[2] == arr[4] && arr[2] == arr[6] && (arr[2] == 'X' || arr[2] == 'O')) {
+        return true;
+    }
+
+    return false;
+}
+
+const GameLogic = (function () {
+
+
+    const determineOutcome = (arr) => {
+        if (checkRows(arr)) {
+            console.log('winner rows');
+        } else if (checkColumns(arr)) {
+            console.log('winner columns');
+        } else if (checkDiagonals(arr)) {
+            console.log('winner diagonals');
+        }
     };
 })();
 
