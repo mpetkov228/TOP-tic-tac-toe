@@ -1,3 +1,4 @@
+const body = document.querySelector('body');
 const playerChoiceContainer = document.querySelector('.player-choice-container');
 
 playerChoiceContainer.addEventListener('click', (event) => {
@@ -13,6 +14,12 @@ playerChoiceContainer.addEventListener('click', (event) => {
 
 const GameBoard = (function () {
     const gameBoardArr = ['', '', '', '', '', '', '', '', ''];
+
+    const resetGameBoardArr = () => {
+        for (let cell of gameBoardArr) {
+            cell = '';
+        }
+    };
 
     return {
         gameBoardArr
@@ -36,6 +43,12 @@ const Player = (function () {
 const PlayGame = (function () {
     const cells = document.querySelectorAll('.cell');
 
+    const resetGameBoard = () => {
+        for (let cell of cells) {
+            cell.textContent = '';
+        }
+    };
+
     const addEvents = () => {
         cells.forEach(cell => {
             cell.addEventListener('click', () => {
@@ -44,7 +57,12 @@ const PlayGame = (function () {
                 GameBoard.gameBoardArr[index] = currentPlayer.marker;
                 cell.textContent = currentPlayer.marker;
                 
-                GameLogic.determineOutcome(GameBoard.gameBoardArr);
+                let result = GameLogic.determineOutcome(GameBoard.gameBoardArr);
+
+                if (result != undefined) {
+                    DisplayController.displayWinner(result);
+                }
+
             }, { once: true });
         });
     }
@@ -54,50 +72,108 @@ const PlayGame = (function () {
     };
 })();
 
+const DisplayController = (function () {
+    const handleRestart = () => {
+        
+    };
+
+    const createGameResultElement = (result) => {
+        const div = document.createElement('div');
+        div.className = 'result-div';
+        const resultTextDiv = document.createElement('div');
+        resultTextDiv.className = 'result-text';
+        const restartBtn = document.createElement('button');
+        restartBtn.className = 'restart-btn';
+        restartBtn.addEventListener('click', handleRestart);
+
+        if (result == 'win') {
+            resultTextDiv.textContent = Player.player1.name + ' wins!';
+        } else if (result == 'loss') {
+            resultTextDiv.textContent = Player.player2.name + ' wins!';
+        } else if (result == 'draw') {
+            resultTextDiv.textContent = 'Draw!';
+        }
+        
+        div.appendChild(resultTextDiv);
+        div.appendChild(restartBtn);
+
+        return div;
+    };
+
+    const displayWinner = (result) => {
+        const div = createGameResultElement(result);
+        body.appendChild(div);
+    };
+
+    return {
+        displayWinner
+    };
+})();
+
 const GameLogic = (function () {
     const checkRows = (arr) => {
         if (arr[0] == arr[1] && arr[0] == arr[2] && (arr[0] == 'X' || arr[0] == 'O')) {
-            return true;
+            return arr[0];
         } else if (arr[3] == arr[4] && arr[3] == arr[5] && (arr[3] == 'X' || arr[3] == 'O')) {
-            return true;
+            return arr[3];
         } else if (arr[6] == arr[7] && arr[6] == arr[8] && (arr[6] == 'X' || arr[6] == 'O')) {
-            return true;
+            return arr[6];
         }
     
-        return false;
+        return '';
     }
 
     const checkColumns = (arr) => {
         if (arr[0] == arr[3] && arr[0] == arr[6] && (arr[0] == 'X' || arr[0] == 'O')) {
-            return true;
+            return arr[0];
         } else if (arr[1] == arr[4] && arr[1] == arr[7] && (arr[1] == 'X' || arr[1] == 'O')) {
-            return true;
+            return arr[1];
         } else if (arr[2] == arr[5] && arr[2] == arr[8] && (arr[2] == 'X' || arr[2] == 'O')) {
-            return true;
+            return arr[2];
         }
     
-        return false;
+        return '';
     }
 
     const checkDiagonals = (arr) => {
         if (arr[0] == arr[4] && arr[0] == arr[8] && (arr[0] == 'X' || arr[0] == 'O')) {
-            return true;
+            return arr[0];
         }
         if (arr[2] == arr[4] && arr[2] == arr[6] && (arr[2] == 'X' || arr[2] == 'O')) {
-            return true;
+            return arr[2];
         }
     
-        return false;
+        return '';
     }
 
-    const determineOutcome = (arr) => {
-        if (checkRows(arr)) {
-            console.log('winner rows');
-        } else if (checkColumns(arr)) {
-            console.log('winner columns');
-        } else if (checkDiagonals(arr)) {
-            console.log('winner diagonals');
+    const checkWinner = (arr) => {
+        let winner = checkRows(arr);
+
+        if (winner == '') {
+            winner = checkColumns(arr);
         }
+        if (winner == '') {
+            winner = checkDiagonals(arr);
+        }
+
+        return winner;
+    };
+
+    const determineOutcome = (arr) => {
+        let winner = checkWinner(arr);
+
+        if (winner == '' && !arr.includes('')) {
+            return 'draw';
+        }
+
+        if (winner == 'X') {
+            return 'win';
+        }
+
+        if (winner == 'O') {
+            return 'loss';
+        }
+
     };
 
     return {
