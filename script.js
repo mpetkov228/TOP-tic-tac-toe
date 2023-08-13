@@ -22,7 +22,8 @@ const GameBoard = (function () {
     };
 
     return {
-        gameBoardArr
+        gameBoardArr,
+        resetGameBoardArr
     };
 })();
 
@@ -63,27 +64,43 @@ const PlayGame = (function () {
                     DisplayController.displayWinner(result);
                 }
 
-            }, { once: true });
+                if (currentPlayer.marker == 'X') {
+                    currentPlayer = Player.player2;
+                } else if (currentPlayer.marker == 'O') {
+                    currentPlayer = Player.player1;
+                }
+            });
         });
     }
     
     return {
-        addEvents
+        addEvents,
+        resetGameBoard
     };
 })();
 
 const DisplayController = (function () {
+    const removeElement = () => {
+        const resultDiv = document.querySelector('.result-div');
+        resultDiv.remove();
+    }
+
     const handleRestart = () => {
-        
+        PlayGame.resetGameBoard();
+        GameBoard.resetGameBoardArr();
+        removeElement();
     };
+
 
     const createGameResultElement = (result) => {
         const div = document.createElement('div');
         div.className = 'result-div';
+
         const resultTextDiv = document.createElement('div');
         resultTextDiv.className = 'result-text';
         const restartBtn = document.createElement('button');
         restartBtn.className = 'restart-btn';
+        restartBtn.textContent = 'Restart';
         restartBtn.addEventListener('click', handleRestart);
 
         if (result == 'win') {
