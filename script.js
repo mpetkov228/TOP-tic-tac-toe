@@ -1,16 +1,4 @@
 const body = document.querySelector('body');
-const playerChoiceContainer = document.querySelector('.player-choice-container');
-
-playerChoiceContainer.addEventListener('click', (event) => {
-    if (event.target.className == 'player-one') {
-        currentPlayer = Player.player1;
-        return;
-    }
-    if (event.target.className == 'player-two') {
-        currentPlayer = Player.player2;
-        return;
-    }
-});
 
 const GameBoard = (function () {
     const gameBoardArr = ['', '', '', '', '', '', '', '', ''];
@@ -58,7 +46,7 @@ const PlayGame = (function () {
                 if (GameBoard.gameBoardArr[index] != '' && cell.textContent != '') {
                     return;
                 }
-                
+
                 GameBoard.gameBoardArr[index] = currentPlayer.marker;
                 cell.textContent = currentPlayer.marker;
                 
