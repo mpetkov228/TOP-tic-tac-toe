@@ -16,8 +16,8 @@ const GameBoard = (function () {
     const gameBoardArr = ['', '', '', '', '', '', '', '', ''];
 
     const resetGameBoardArr = () => {
-        for (let cell of gameBoardArr) {
-            cell = '';
+        for (let i = 0; i < gameBoardArr.length; i++) {
+            gameBoardArr[i] = '';
         }
     };
 
@@ -54,14 +54,20 @@ const PlayGame = (function () {
         cells.forEach(cell => {
             cell.addEventListener('click', () => {
                 const index = cell.getAttribute('data-index');
-        
+                
+                if (GameBoard.gameBoardArr[index] != '' && cell.textContent != '') {
+                    return;
+                }
+                
                 GameBoard.gameBoardArr[index] = currentPlayer.marker;
                 cell.textContent = currentPlayer.marker;
                 
                 let result = GameLogic.determineOutcome(GameBoard.gameBoardArr);
+                console.log(GameBoard.gameBoardArr)
 
                 if (result != undefined) {
                     DisplayController.displayWinner(result);
+                    return;
                 }
 
                 if (currentPlayer.marker == 'X') {
@@ -69,6 +75,7 @@ const PlayGame = (function () {
                 } else if (currentPlayer.marker == 'O') {
                     currentPlayer = Player.player1;
                 }
+
             });
         });
     }
